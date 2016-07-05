@@ -11,19 +11,21 @@ import collections
 
 r = requests.get('https://feeds.citibikenyc.com/stations/stations.json')
 # Obtain keys
-key_list = [] #unique list of keys for each station listing
+key_list = []  # unique list of keys for each station listing
 for station in r.json()['stationBeanList']:
     for k in station.keys():
         if k not in key_list:
             key_list.append(k)
 df = json_normalize(r.json()['stationBeanList'])
-# Challenge exercises from Unit 3.1.3
+# This section of code was for the exercises in Unit 3
+"""
+#  Challenge exercises from Unit 3.1.3
 bmean1 = df['availableBikes'].mean()  # 11.85
 bmedian1 = df['availableBikes'].median()  # 8.0
-# Remove not in service stations
+# Calculate on in service stations only
 bmean2 = df[df.statusValue == "In Service"].mean()['availableBikes']
 bmedian2 = df[df.statusValue == "In Service"].median()['availableBikes']
-# method described in Thinkful.com
+# Calculate on in service stations: method described in Thinkful.com
 bmean3 = df[df['statusValue'] == "In Service"]['availableBikes'].mean()
 bmedian3 = df[df['statusValue'] == "In Service"]['availableBikes'].median()
 
@@ -32,7 +34,8 @@ plt.show()
 
 df['totalDocks'].hist()
 plt.show()
-
+"""
+# Create a database to store results
 con = lite.connect('citi_bike.db')
 cur = con.cursor()
 with con:
@@ -87,7 +90,8 @@ with con:
 # take the string and parse it into a Python datetime object
 exec_time = parse(r.json()['executionTime'])
 with con:
-    cur.execute('INSERT INTO available_bikes (execution_time) VALUES (?)', (exec_time.strftime('%s'),))
+    # The following line modified from ...<exec_time.strftime('%s')>... to conform with windows datetime
+    cur.execute('INSERT INTO available_bikes (execution_time) VALUES (?)', (exec_time.strftime('%Y-%m-%dT%H:%M:%S'),))
 id_bikes = collections.defaultdict(int)  # defaultdict to store available bikes by station
 
 # loop through the stations in the station list
@@ -98,4 +102,5 @@ for station in r.json()['stationBeanList']:
 with con:
     for k, v in id_bikes.items():
         cur.execute("UPDATE available_bikes SET _" + str(k) + " = " + str(v) +
-                    " WHERE execution_time = " + exec_time.strftime('%s') + ";")
+                    " WHERE execution_time = " + exec_time.strftime('%Y-%m-%dT%H:%M:%S') + ";")
+con.close()
