@@ -6,7 +6,6 @@ import time
 from dateutil.parser import parse
 import collections
 import sqlite3 as lite
-import requests
 
 r = requests.get('https://feeds.citibikenyc.com/stations/stations.json')
 # Obtain keys
@@ -36,7 +35,21 @@ plt.show()
 con = lite.connect('citi_bike.db')
 cur = con.cursor()
 with con:
-    cur.execute('CREATE TABLE citibike_reference (id INT PRIMARY KEY, totalDocks INT, city TEXT, altitude INT, stAddress2 TEXT, longitude NUMERIC, postalCode TEXT, testStation TEXT, stAddress1 TEXT, stationName TEXT, landMark TEXT, latitude NUMERIC, location TEXT )')
+    cur.execute('CREATE TABLE citibike_reference '
+                '(id INT PRIMARY KEY, '
+                'totalDocks INT, '
+                'city TEXT, '
+                'altitude INT, '
+                'stAddress2 TEXT, '
+                'longitude NUMERIC, '
+                'postalCode TEXT, '
+                'testStation TEXT, '
+                'stAddress1 TEXT, '
+                'stationName TEXT, '
+                'landMark TEXT, '
+                'latitude NUMERIC, '
+                'location TEXT )'
+                )
 # a prepared SQL statement we're going to execute over and over again
 sql = "INSERT INTO citibike_reference " \
       "(id, totalDocks, city, altitude, stAddress2, longitude, " \
