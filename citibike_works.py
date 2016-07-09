@@ -15,26 +15,12 @@ for station in r.json()['stationBeanList']:
         if k not in key_list:
             key_list.append(k)
 df = json_normalize(r.json()['stationBeanList'])
-"""
-# Challenge exercises from Unit 3.1.3
-bmean1 = df['availableBikes'].mean()  # 11.85
-bmedian1 = df['availableBikes'].median()  # 8.0
-# Remove not in service stations
-bmean2 = df[df.statusValue == "In Service"].mean()['availableBikes']
-bmedian2 = df[df.statusValue == "In Service"].median()['availableBikes']
-# method described in Thinkful.com
-bmean3 = df[df['statusValue'] == "In Service"]['availableBikes'].mean()
-bmedian3 = df[df['statusValue'] == "In Service"]['availableBikes'].median()
 
-df['availableBikes'].hist()
-plt.show()
-
-df['totalDocks'].hist()
-plt.show()
-"""
 con = lite.connect('citi_bike.db')
 cur = con.cursor()
 with con:
+    cur.executescript('DROP TABLE IF EXISTS citibike_reference')
+    cur.exucutescript('DROP TABLE IF EXISTS available_bikes')
     cur.execute('CREATE TABLE citibike_reference '
                 '(id INT PRIMARY KEY, '
                 'totalDocks INT, '
