@@ -39,6 +39,9 @@ plt.show()
 con = lite.connect('citi_bike.db')
 cur = con.cursor()
 with con:
+  cur.executescript('DROP TABLE IF EXISTS citibike_reference')
+  cur.executescript('DROP TABLE IF EXISTS available_bikes')
+with con:
     cur.execute('CREATE TABLE citibike_reference '
                 '(id INT PRIMARY KEY, '
                 'totalDocks INT, '
