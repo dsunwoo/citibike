@@ -20,8 +20,27 @@ con = lite.connect('citi_bike.db')
 cur = con.cursor()
 with con:
     cur.executescript('DROP TABLE IF EXISTS citibike_reference')
+<<<<<<< HEAD
     cur.executescript('DROP TABLE IF EXISTS available_bikes')
     cur.execute('CREATE TABLE citibike_reference (id INT PRIMARY KEY, totalDocks INT, city TEXT, altitude INT, stAddress2 TEXT, longitude NUMERIC, postalCode TEXT, testStation TEXT, stAddress1 TEXT, stationName TEXT, landMark TEXT, latitude NUMERIC, location TEXT )')
+=======
+    cur.exucutescript('DROP TABLE IF EXISTS available_bikes')
+    cur.execute('CREATE TABLE citibike_reference '
+                '(id INT PRIMARY KEY, '
+                'totalDocks INT, '
+                'city TEXT, '
+                'altitude INT, '
+                'stAddress2 TEXT, '
+                'longitude NUMERIC, '
+                'postalCode TEXT, '
+                'testStation TEXT, '
+                'stAddress1 TEXT, '
+                'stationName TEXT, '
+                'landMark TEXT, '
+                'latitude NUMERIC, '
+                'location TEXT )'
+                )
+>>>>>>> a588531f4ceb80a3d5ecf4ea3e72ce4cc12a5064
 # a prepared SQL statement we're going to execute over and over again
 sql = "INSERT INTO citibike_reference " \
       "(id, totalDocks, city, altitude, stAddress2, longitude, " \
