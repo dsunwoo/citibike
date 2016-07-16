@@ -38,5 +38,8 @@ print("With %d bicycles coming and going in the hour between %s and %s" % (
 ))
 
 plt.bar(hour_change.keys(), hour_change.values())
+plt.xlabel("Station_Id")
+plt.ylabel("Exchanges")
+plt.title("Bike Exchanges 1 Hour")
 plt.show()
 
